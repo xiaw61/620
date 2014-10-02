@@ -1,0 +1,20 @@
+// copyright xiaw
+#include <regex>
+#include <iostream>
+#include <string>
+#include <fstream>
+std::string getTermStringFromFile(std::string fileName) {
+    std::ifstream dataFile(fileName);
+    std::istream_iterator<char> is(dataFile >> std::noskipws), efo;
+    std::string resultStr(is, efo);
+    return resultStr;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 4)std::cout << " argument is not enough!";
+    std::string searchFileString = getTermStringFromFile(argv[2]);
+    // test
+    std::cout << searchFileString;
+
+    return 0;
+}
