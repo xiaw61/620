@@ -1,0 +1,62 @@
+# Makefile for use with emacs and emacs's flymake mode
+# Copyright (C) raodm@miamiOH.edu
+#
+# From emacs menu select Tools->compile
+# To compile one file use the syntax:
+#     make SRC=hello.c
+# The compile many files use the syntax (change my_exe_name below):
+#     make many EXE=my_exe_name
+#
+
+.PHONY: check-syntax all clean style many style-many
+
+CXX=g++
+CXXFLAGS=-Wall -g -Wextra -std=c++11
+LIBS=-lm
+
+# Target exectuable name if SRC is defined
+ifdef SRC
+OBJ=$(patsubst %.cpp, %.o,%. $(SRC))
+EXE=$(patsubst %.cpp, %,   $(SRC))
+endif
+
+# Variables to conditionally download cpplint.py
+have_lint=$(wildcard cpplint.py)
+ifneq ('$(have_lint)', 'cpplint.py')
+WGET=get-lint
+endif
+
+all: build style
+
+build: $(SRC)
+ifeq (,$(findstring .h, $(SRC)))
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(EXE) $(LIBS)
+endif
+
+compile: $(SRC)
+ifeq (,$(findstring .h, $(SRC)))
+	$(CXX) -c $(CXXFLAGS) $(SRC) -o $(OBJ) $(LIBS)
+endif
+
+check-syntax:
+	$(CXX) $(CXXFLAGS) -fsyntax-only $(CHK_SOURCES)
+
+style: $(WGET)
+	./cpplint.py $(SRC)
+
+get-lint:
+	wget -q http://pc2lab.cec.miamiOH.edu/documents/cpplint.py
+	chmod +x cpplint.py
+
+many: compile-many style-many
+
+compile-many:
+ifndef EXE
+	@echo Specify target executable name via command-line EXE=your_exe_name
+	@exit 2
+endif
+	$(CXX) $(CXXFLAGS) *.c -o $(EXE) $(LIBS)
+
+style-many: $(WGET)
+	$(eval SRCS:=$(wildcard *.h *.c))
+	./cpplint.py $(SRCS) || echo done

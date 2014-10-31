@@ -1,0 +1,14 @@
+#pragma OPENCL EXTENSION cl_khr_fp64 : enable
+__kernel void
+toggle(__global char *l,__global char *c){
+
+    size_t i = get_global_id(0);
+
+    char up = *ch -'a'+'A';
+
+    if(l[i] > 'a') {
+            l[i] = *c;
+    } else {
+      l[i] = up;
+    }
+}
