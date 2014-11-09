@@ -72,7 +72,7 @@ std::vector<int> func(std::vector<char> charList,cl::KernelFunctor& sort,
                                            index.size()*sizeof(int), queue.RWFlags);
     int size = index.size();
 
-    sort(charBuf,indexBuf,size);
+    sort(charBuf,indexBuf,size,retBuf);
     queue.enqueueMapBuffer(retBuf, index.size()*sizeof(int));
     
 
@@ -115,9 +115,7 @@ int main(int argc, char *argv[]) {
     
     //    std::vector<int> index2={7,4,0};
     std::vector<int> index2=sortedIndex(charList,index,argv[1]);
-    /*
     putStringRight(index,index2,charList,ret);
     wirte2File(ret,charList.size(),argv[3]);
-    */
 
 }
