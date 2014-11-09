@@ -28,7 +28,8 @@ kernel void sort(global const char* str, global const int *index,
     for(int i =0;i < size;i++) {
         int comIndex = index[i];
         int comp = isOrdered(str,currentIndex,comIndex);
-        bool upDown = (comp == -1);
+        bool upDown = ((comp == -1)|| 
+		( (comp==0) && (comIndex > currentIndex)  ) );
         int count = 0;
         while(str[comIndex+count] != 0) {
             count ++;

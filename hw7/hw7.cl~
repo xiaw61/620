@@ -5,15 +5,15 @@ int isOrdered(global const char * str,int a,int b) {
             a++;
             b++;
         } else if(str[a] > str[b] ) {
-            return 1;
-        } else {
             return -1;
+        } else {
+            return 1;
         }
     }
 
     if (str[a] == 0 && str[b] == 0) return 0;
-    else if(str[b] == 0) return 1;
-    else return -1;
+    else if(str[b] == 0) return -1;
+    else return 1;
 }
 
 
@@ -28,7 +28,8 @@ kernel void sort(global const char* str, global const int *index,
     for(int i =0;i < size;i++) {
         int comIndex = index[i];
         int comp = isOrdered(str,currentIndex,comIndex);
-        bool upDown = (comp == -1);
+        bool upDown = ((comp == -1)|| 
+		( (comp==0) && (comIndex > currentIndex)  ) );
         int count = 0;
         while(str[comIndex+count] != 0) {
             count ++;
