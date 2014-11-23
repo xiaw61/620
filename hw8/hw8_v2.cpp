@@ -5,7 +5,7 @@
 #include <iterator>
 #include <sstream>
 #include <algorithm>
-#define SIZE 1024
+#define SIZE 4096
 
 void func(std::ifstream& dataFile, std::ofstream& outFile, char a, char b) {
     dataFile.seekg(0,dataFile.end);
@@ -18,21 +18,14 @@ void func(std::ifstream& dataFile, std::ofstream& outFile, char a, char b) {
 while((dataFile.read(buffer,SIZE))   ) {
         std::string temp(buffer);
         std::istringstream str(temp);
-
         std::istream_iterator<char> it(str >>std::noskipws);
         std::transform(it, eof, out, fun);
-    }
- 
-// outFile<<"hahahahah\n";
- //delete buffer;
- // dataFile.read(buffer,(dataFile.tellg())%SIZE);
- // dataFile.read(buffer,30);
-// outFile <<size<<"hahah";
+ }
  std::string temp(buffer,0,size%SIZE );
  std::istringstream str(temp);
-  std::istream_iterator<char> it(str >>std::noskipws);
+ std::istream_iterator<char> it(str >>std::noskipws);
  std::transform(it, eof, out, fun);
-
+ 
 }
 
 int main(int argc, char *argv[]) {
